@@ -1,0 +1,18 @@
+import json
+
+from sklearn import datasets
+
+def load_iris_data() :
+
+    iris = datasets.load_iris()
+
+    return (iris.data, iris.target, iris.target_names)
+
+from sklearn.neighbors import KNeighborsClassifier
+
+def knn(X_train, y_train, k_neighbors = 3):
+
+    clf = kNeighborsClassifier(k_neighbors)
+    clf.fit(X_train, y_train)
+
+    return clf
