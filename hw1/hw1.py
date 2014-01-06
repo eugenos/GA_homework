@@ -1,12 +1,8 @@
 import json
+import numpy as np
+import pylab as pl
 
 from sklearn import datasets
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.cross_validation import KFold
-
-KNN=True
-NB=False
 
 def load_iris_data() :
 
@@ -14,16 +10,36 @@ def load_iris_data() :
    
     return (iris.data, iris.target, iris.target_names)
 
-def knn(X_train, y_train, k_neighbors = 3):
+from sklearn.neighbors import KNeighborsClassifier
 
-    clf = kNeighborsClassifier(k_neighbors)
+def knn(X_train, y_train, n_neighbors=3):
+
+    clf = KNeighborsClassifier(n_neighbors)
     clf.fit(X_train, y_train)
-
     return clf
+
+from sklearn.naive_bayes import GaussianNB
 
 def nb(X_train, y_train):
 
     gnb = GaussianNB()
     clf = gnb.fit(X_train, y_train)
-    
     return clf
+
+from sklearn.cross_validation import KFold
+
+def cross_validate(XX, yy, classifier, k_fold):
+
+    k_fold_indices = KFold(len(XX), n_folds=k_fold, indices=True, shuffle=True, random_state=0)
+
+    k_score_total = 0
+
+    for train_slice, test_slice in k_fold_indices :
+
+        model=classifier(XX[[train_slice]], yy[[train_slice]])
+
+        k_score = model.score(XX[[test_slice]], yy[[test_slice]])
+
+        k_score_total += k_score
+
+    return k_score_total*1.0/k_fold
