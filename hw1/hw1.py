@@ -8,11 +8,11 @@ def load_iris_data() :
 
     iris = datasets.load_iris()
    
-    return (iris.data, iris.target, iris.target_names)
+    return (iris.data, iris.target, iris.target_names) #return 3 sets of values
 
 from sklearn.neighbors import KNeighborsClassifier
 
-def knn(X_train, y_train, n_neighbors=3):
+def knn(X_train, y_train, n_neighbors=3): #set nearest neighbors parameter to 3
 
     clf = KNeighborsClassifier(n_neighbors)
     clf.fit(X_train, y_train)
